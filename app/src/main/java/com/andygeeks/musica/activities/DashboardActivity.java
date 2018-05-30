@@ -15,8 +15,10 @@ import android.view.Gravity;
 import android.view.MenuItem;
 
 import com.andygeeks.musica.R;
+import com.andygeeks.musica.fragments.HomeFragment;
 import com.andygeeks.musica.fragments.MyMusicListFragment;
 import com.andygeeks.musica.fragments.MyVideoListFragment;
+import com.andygeeks.musica.fragments.SettingsFragment;
 
 public class DashboardActivity extends AppCompatActivity {
 
@@ -65,7 +67,7 @@ public class DashboardActivity extends AppCompatActivity {
         Class fragmentClass;
         switch(menuItem.getItemId()) {
             case R.id.nav_home:
-                fragmentClass = MyMusicListFragment.class;
+                fragmentClass = HomeFragment.class;
                 break;
             case R.id.nav_my_music:
                 fragmentClass = MyMusicListFragment.class;
@@ -74,10 +76,10 @@ public class DashboardActivity extends AppCompatActivity {
                 fragmentClass = MyVideoListFragment.class;
                 break;
             case R.id.nav_settings:
-                fragmentClass = MyMusicListFragment.class;
+                fragmentClass = SettingsFragment.class;
                 break;
             default:
-                fragmentClass = MyMusicListFragment.class;
+                fragmentClass = HomeFragment.class;
         }
 
         try {
