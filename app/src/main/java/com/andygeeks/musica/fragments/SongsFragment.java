@@ -2,8 +2,13 @@ package com.andygeeks.musica.fragments;
 
 
 import android.Manifest;
+import android.content.ContentUris;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
@@ -11,6 +16,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +97,7 @@ public class SongsFragment extends Fragment {
                     MediaStore.Audio.Media.TITLE,
                     MediaStore.Audio.Media.DATA,
                     MediaStore.Audio.Media.DISPLAY_NAME,
-                    MediaStore.Audio.Media.DURATION
+                    MediaStore.Audio.Media.DURATION,
             };
 
             cursor = getActivity().getContentResolver().query(
@@ -103,15 +109,18 @@ public class SongsFragment extends Fragment {
 
             while (cursor.moveToNext()) {
                 SongsPojo song = new SongsPojo();
-                song.setId(cursor.getString(0));
+                song.setId(cursor.getLong(0));
                 song.setArtist(cursor.getString(1));
                 song.setTitle(cursor.getString(2));
                 song.setData(cursor.getString(3));
                 song.setDisplayName(cursor.getString(4));
                 song.setDuration(TimeUtil.secondsToTime(cursor.getString(5)));
+                song.setAlbumCover(getAlbumCover(cursor.getLong(0)));
+                Log.i("SOngList", song.getId() + "||" + song.getArtist() + "||" + song.getTitle() + "||" + song.getData() +
+                        "||" + song.getDisplayName() + "||" + cursor.getString(5));
                 songs.add(song);
             }
-        }finally {
+        } finally {
             if (cursor != null) {
                 cursor.close();
             }
@@ -119,5 +128,35 @@ public class SongsFragment extends Fragment {
         return songs;
     }
 
+    private Bitmap getAlbumCover(Long albumId) {
+
+            Cursor albumCursor = getActivity().getContentResolver().query(
+                    MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI,
+                    new String[]{MediaStore.Audio.Albums.ALBUM_ART},
+                    MediaStore.Audio.Albums._ID + " = ?",
+                    new String[]{Long.toString(albumId)},
+                    null
+            );
+            boolean queryResult = albumCursor.moveToFirst();
+            String result = null;
+            if (queryResult) {
+                result = albumCursor.getString(0);
+            }
+            albumCursor.close();
+            return BitmapFactory.decodeFile(result);
+        }
+
+
+
+//        Uri sArtworkUri = Uri.parse("/storage/emulated/0/Samsung/Music/");
+//        Uri uri = ContentUris.withAppendedId(sArtworkUri, album_id);
+//        ContentResolver res = getActivity().getContentResolver();
+//        InputStream in = null;
+//        try {
+//            in = res.openInputStream(uri);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return BitmapFactory.decodeStream(in);
 
 }

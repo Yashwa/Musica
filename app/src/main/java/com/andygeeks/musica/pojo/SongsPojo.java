@@ -1,21 +1,32 @@
 package com.andygeeks.musica.pojo;
 
+import android.graphics.Bitmap;
+
 public class SongsPojo {
     private String fileName;
     private String filePath;
     private String artist;
     private String album;
     private String duration;
-    private String id;
+    private Long id;
     private String title;
     private String data;
     private String displayName;
+    private Bitmap albumCover;
 
-    public String getId() {
+    public Bitmap getAlbumCover() {
+        return albumCover;
+    }
+
+    public void setAlbumCover(Bitmap albumCover) {
+        this.albumCover = albumCover;
+    }
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

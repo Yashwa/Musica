@@ -1,8 +1,8 @@
 package com.andygeeks.musica.activities;
 
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,6 +13,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.andygeeks.musica.R;
 import com.andygeeks.musica.fragments.HomeFragment;
@@ -20,29 +22,35 @@ import com.andygeeks.musica.fragments.MyMusicListFragment;
 import com.andygeeks.musica.fragments.MyVideoListFragment;
 import com.andygeeks.musica.fragments.SettingsFragment;
 
-public class DashboardActivity extends AppCompatActivity {
+public class DashboardActivity extends AppCompatActivity implements View.OnClickListener {
 
     DrawerLayout drawerLayout;
+    LinearLayout llBottomSheet;
+    LinearLayout llPlayBar;
+    BottomSheetBehavior bottomSheetBehavior;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dashboard);
 
+        drawerLayout = findViewById(R.id.drawer_layout);
+        llBottomSheet = findViewById(R.id.bottom_sheet);
+        llPlayBar = findViewById(R.id.play_bar);
+        llPlayBar.setOnClickListener(this);
+
         /* Custom Toolbar*/
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         toolbar.setNavigationIcon(R.drawable.ic_menu);
 
-        drawerLayout = findViewById(R.id.drawer_layout);
-
         /* Drawer toggle to toggle hamburger to back arrow */
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        final ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, toolbar, R.string.open,
                 R.string.close);
         drawerLayout.addDrawerListener(toggle);
         ActionBar actionBar = getSupportActionBar();
-        if(actionBar != null) {
+        if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
             actionBar.setHomeButtonEnabled(true);
         }
@@ -59,13 +67,46 @@ public class DashboardActivity extends AppCompatActivity {
         });
 
 
+        bottomSheetBehavior = BottomSheetBehavior.from(llBottomSheet);
+        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+
+        // set callback for changes
+        bottomSheetBehavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+            @Override
+            public void onStateChanged(@NonNull View bottomSheet, int newState) {
+
+            }
+
+            @Override
+            public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+
+            }
+        });
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.play_bar:
+                toggleBottomSheet();
+                break;
+        }
+    }
+
+    public void toggleBottomSheet() {
+        if (bottomSheetBehavior.getState() != BottomSheetBehavior.STATE_EXPANDED) {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+        } else {
+            bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+        }
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
-        switch(menuItem.getItemId()) {
+        switch (menuItem.getItemId()) {
             case R.id.nav_home:
                 fragmentClass = HomeFragment.class;
                 break;
@@ -110,4 +151,6 @@ public class DashboardActivity extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
+
+
 }

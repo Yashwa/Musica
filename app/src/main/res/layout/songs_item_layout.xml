@@ -23,7 +23,9 @@
             android:id="@+id/title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Over th Horizon"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="Over the Horizon"
             android:textColor="@color/title_color"
             android:textSize="@dimen/itemTitle" />
 

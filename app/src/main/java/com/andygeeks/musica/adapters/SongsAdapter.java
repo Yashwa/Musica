@@ -30,10 +30,16 @@ public class SongsAdapter extends RecyclerView.Adapter<SongsAdapter.MyViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-//        holder.songImage.setImageDrawable(R.drawable.ic_my_music);
-        holder.title.setText(songs.get(position).getTitle());
-        holder.artist.setText(songs.get(position).getArtist());
-        holder.duration.setText(songs.get(position).getDuration());
+        SongsPojo songsPojo = songs.get(position);
+
+        if (songsPojo.getAlbumCover() != null) {
+            holder.songImage.setImageBitmap(songsPojo.getAlbumCover());
+        } else {
+            holder.songImage.setImageResource(R.drawable.ic_my_music);
+        }
+        holder.title.setText(songsPojo.getTitle());
+        holder.artist.setText(songsPojo.getArtist());
+        holder.duration.setText(songsPojo.getDuration());
     }
 
     @Override
