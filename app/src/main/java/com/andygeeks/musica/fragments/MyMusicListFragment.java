@@ -11,9 +11,6 @@ import android.view.ViewGroup;
 
 import com.andygeeks.musica.R;
 import com.andygeeks.musica.adapters.MyMusicListAdapter;
-import com.andygeeks.musica.pojo.AudioPojo;
-
-import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -21,9 +18,6 @@ import java.util.ArrayList;
 public class MyMusicListFragment extends Fragment {
 
     View rootView;
-//    RecyclerView mRecyclerView;
-//    RecyclerView.LayoutManager mLayoutManager;
-//    RecyclerView.Adapter mAdapter;
 
     private TabLayout tabLayout;
     private ViewPager viewPager;
@@ -36,19 +30,10 @@ public class MyMusicListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the songs_item_layout for this fragment
         rootView = inflater.inflate(R.layout.fragment_my_music_list, container, false);
 
-//        mRecyclerView = rootView.findViewById(R.id.myMusicList_recyclerView);
-//
-//        mLayoutManager = new LinearLayoutManager(getContext());
-//        mRecyclerView.setLayoutManager(mLayoutManager);
-//
-//        mAdapter = new MyMusicListAdapter(getAudioPojos());
-//        mRecyclerView.setAdapter(mAdapter);
-
         viewPager = rootView.findViewById(R.id.viewpager);
-//        setupViewPager(viewPager);
 
         MyMusicListAdapter adapter = new MyMusicListAdapter(getActivity(), getActivity().getSupportFragmentManager());
         viewPager.setAdapter(adapter);
@@ -57,12 +42,6 @@ public class MyMusicListFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
-    }
-
-    private ArrayList<AudioPojo> getAudioPojos() {
-
-
-        return null;
     }
 
 }
